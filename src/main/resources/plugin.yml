@@ -1,0 +1,5 @@
+name: HyriBuild
+main: fr.hyriode.build.HyriBuild
+version: @version@
+depend: [Hyrame]
+authors: [AstFaster]
