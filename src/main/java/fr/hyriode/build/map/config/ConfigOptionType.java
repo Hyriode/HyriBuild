@@ -1,9 +1,7 @@
 package fr.hyriode.build.map.config;
 
 import fr.hyriode.build.map.config.handler.ConfigOptionHandler;
-import fr.hyriode.build.map.config.handler.models.BooleanHandler;
-import fr.hyriode.build.map.config.handler.models.LocationHandler;
-import fr.hyriode.build.map.config.handler.models.LocationsHandler;
+import fr.hyriode.build.map.config.handler.models.*;
 
 import java.util.function.Function;
 
@@ -22,6 +20,11 @@ public enum ConfigOptionType {
     LOCATIONS(process -> new LocationsHandler(process, false, false)),
     BLOCK_LOCATIONS(process -> new LocationsHandler(process, false, true)),
     PLAYER_LOCATIONS(process -> new LocationsHandler(process, true, false)),
+
+    AREA(AreaHandler::new),
+
+    WAITING_ROOM_LEADERBOARDS(WRLeaderboardsHandler::new),
+
 
     ;
 

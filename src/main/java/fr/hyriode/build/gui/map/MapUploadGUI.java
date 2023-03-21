@@ -40,7 +40,7 @@ public class MapUploadGUI extends BuildGUI {
         this.goBackSlot = 0;
         this.header = false;
         this.category = category;
-        this.type = category.getTypes() == null ? "" : category.getTypes().get(0);
+        this.type = category.getTypes() == null ? "DEFAULT" : category.getTypes().get(0);
     }
 
     @Override
@@ -59,6 +59,11 @@ public class MapUploadGUI extends BuildGUI {
                 event -> {
                     if (this.name.isEmpty() || this.type.isEmpty()) {
                         this.owner.sendMessage("§3Build §f ┃ Paramètres §cinvalides §f!");
+                        return;
+                    }
+
+                    if (HyriAPI.get().getWorldManager().getWorld(this.category.getDatabase(), this.type, this.name) != null) {
+                        this.owner.sendMessage("§3Build §f ┃ §cUne map existe déjà avec ces paramètres !");
                         return;
                     }
 

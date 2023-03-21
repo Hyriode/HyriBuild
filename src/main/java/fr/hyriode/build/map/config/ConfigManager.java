@@ -13,9 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by AstFaster
@@ -45,8 +44,7 @@ public class ConfigManager {
 
             final ConfigProcess<T> process = new ConfigProcess<>(player, config, configData);
 
-            this.loadFields(process, config, null, null, configClass.getFields());
-            this.loadFields(process, config, null, null, configClass.getDeclaredFields());
+            this.loadFields(process, config, null, null, this.getAllFields(configClass));
 
             this.processes.add(process);
 
@@ -60,7 +58,7 @@ public class ConfigManager {
         }
     }
 
-    private void loadFields(ConfigProcess<?> process, IHyriConfig config, ConfigOptionCategory category, Object categoryObject, Field[] fields) {
+    private void loadFields(ConfigProcess<?> process, IHyriConfig config, ConfigOptionCategory category, Object categoryObject, List<Field> fields) {
         try {
             for (Field field : fields) {
                 final ConfigOptionCategory nestedCategory = field.getAnnotation(ConfigOptionCategory.class);
@@ -71,8 +69,7 @@ public class ConfigManager {
                     final Object nestedCategoryObject = field.get(config);
                     final Class<?> clazz = nestedCategoryObject.getClass();
 
-                    this.loadFields(process, config, nestedCategory, nestedCategoryObject, clazz.getFields());
-                    this.loadFields(process, config, nestedCategory, nestedCategoryObject, clazz.getDeclaredFields());
+                    this.loadFields(process, config, nestedCategory, nestedCategoryObject, this.getAllFields(clazz));
                     continue;
                 }
 
@@ -87,6 +84,18 @@ public class ConfigManager {
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Field> getAllFields(Class<?> clazz) {
+        if (clazz == null) {
+            return Collections.emptyList();
+        }
+
+        final List<Field> result = new ArrayList<>(this.getAllFields(clazz.getSuperclass()));
+
+        Collections.addAll(result, clazz.getDeclaredFields());
+
+        return result;
     }
 
     public ConfigProcess<?> getProcess(UUID player) {

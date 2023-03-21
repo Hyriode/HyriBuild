@@ -39,6 +39,14 @@ public class Permissions {
 
         DELETE((rank, environment) -> rank.isSuperior(StaffRank.MANAGER)),
         UPLOAD((rank, environment) -> rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER)),
+        RE_UPLOAD((rank, environment) -> {
+            if (environment == Environment.PRODUCTION) {
+                return rank.isSuperior(StaffRank.MANAGER);
+            } else if (environment == Environment.DEVELOPMENT) {
+                return rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER);
+            }
+            return false;
+        }),
         IMPORT((rank, environment) -> rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER)),
         TRANSFER((rank, environment) -> rank.isSuperior(StaffRank.MANAGER)),
         CHANGE_STATE((rank, environment) -> {

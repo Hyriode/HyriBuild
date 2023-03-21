@@ -4,6 +4,9 @@ import fr.hyriode.build.map.config.ConfigOption;
 import fr.hyriode.build.map.config.ConfigOptionType;
 import fr.hyriode.hyrame.utils.LocationWrapper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by AstFaster
  * on 27/02/2023 at 17:17
@@ -41,5 +44,21 @@ public class WRConfig {
             description = "Lieu où sera placé le NPC contenant les statistiques."
     )
     private LocationWrapper npcLocation;
+
+    @ConfigOption(
+            type = ConfigOptionType.WAITING_ROOM_LEADERBOARDS,
+            id = "wr-leaderboards",
+            name = "Classements waiting room",
+            description = "Lieux où seront placés les classements du mini-jeu."
+    )
+    private Map<String, LocationWrapper> leaderboards = new HashMap<>();
+
+    public void registerLeaderboard(String key) {
+        this.leaderboards.put(key, null);
+    }
+
+    public Map<String, LocationWrapper> getLeaderboards() {
+        return this.leaderboards;
+    }
 
 }

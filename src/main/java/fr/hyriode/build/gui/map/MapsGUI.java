@@ -70,7 +70,7 @@ public class MapsGUI extends BuildGUI {
                 .filter(map -> (this.filters.getConfig() == Filters.Config.DONE && map.hasConfig()) || (this.filters.getConfig() == Filters.Config.TODO && !map.hasConfig()) || (this.filters.getConfig() == Filters.Config.ALL))
                 .sorted((o1, o2) -> this.filters.getDateOrder() == Filters.Order.NONE ? 0 : Math.toIntExact(this.filters.getDateOrder() == Filters.Order.ASCENDING ? o1.getHandle().getCreationDate() - o2.getHandle().getCreationDate() : o2.getHandle().getCreationDate() - o1.getHandle().getCreationDate()))
                 .sorted(Comparator.comparing(map -> map.getHandle().getCategory()))
-                .sorted((o1, o2) -> this.category.getTypes().indexOf(o1.getHandle().getCategory()) - this.category.getTypes().indexOf(o2.getHandle().getCategory()))
+                .sorted((o1, o2) -> this.category.getTypes() == null ? 0 : this.category.getTypes().indexOf(o1.getHandle().getCategory()) - this.category.getTypes().indexOf(o2.getHandle().getCategory()))
                 .collect(Collectors.toList());
 
         final Pagination<PaginatedItem> pagination = this.paginationManager.getPagination();
@@ -101,7 +101,7 @@ public class MapsGUI extends BuildGUI {
     private ItemStack createItem(Map map) {
         final ItemStack itemStack = new ItemBuilder(MapUtils.createItem(map)).appendLore("", "§3Cliquer pour modifier").build();
 
-        itemStack.setAmount(this.category.getTypes() == null ? 0 : this.category.getTypes().indexOf(map.getHandle().getCategory()) + 1);
+        itemStack.setAmount(this.category.getTypes() == null ? 1 : this.category.getTypes().indexOf(map.getHandle().getCategory()) + 1);
 
         return itemStack;
     }

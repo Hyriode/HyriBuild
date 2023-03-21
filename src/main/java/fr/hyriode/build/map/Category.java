@@ -4,6 +4,9 @@ import fr.hyriode.api.config.IHyriConfig;
 import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.map.config.ConfigProcess;
 import fr.hyriode.build.map.config.models.MoutronConfig;
+import fr.hyriode.build.map.config.models.RushTheFlagConfig;
+import fr.hyriode.build.map.config.models.SheepWarsConfig;
+import fr.hyriode.build.map.config.models.TheRunnerConfig;
 import fr.hyriode.build.util.BuildHead;
 import fr.hyriode.hyrame.item.ItemBuilder;
 import org.bukkit.Material;
@@ -23,7 +26,7 @@ public enum Category {
     // Games
     BED_WARS("BedWars", "bedwars", Arrays.asList("SOLO", "DOUBLES", "TRIO", "SQUAD", "ONE_ONE"),
             new ItemStack(Material.BED),
-            MoutronConfig.class),
+            null),
     PEARL_CONTROL("PearlControl", "pearlcontrol", Collections.singletonList("NORMAL"),
             new ItemStack(Material.ENDER_PEARL),
             null),
@@ -32,20 +35,23 @@ public enum Category {
             null),
     SHEEP_WARS("SheepWars", "sheepwars", Collections.singletonList("FIVE_FIVE"),
             new ItemStack(Material.WOOL),
-            null),
+            SheepWarsConfig.class),
     LASER_GAME("LaserGame", "lasergame", Collections.singletonList("FIVE_FIVE"),
             new ItemStack(Material.IRON_HOE),
             null),
+    THE_RUNNER("TheRunner", "therunner", Arrays.asList("SOLO", "DOUBLES"),
+            new ItemStack(Material.DIAMOND_BOOTS),
+            TheRunnerConfig.class),
     RUSH_THE_FLAG("RushTheFlag", "rushtheflag", Arrays.asList("SOLO", "DOUBLES", "MDT"),
             new ItemStack(Material.BANNER, 1, (short) 15),
-            null),
+            RushTheFlagConfig.class),
     GET_DOWN("GetDown", "getdown", Collections.singletonList("NORMAL"),
             new ItemStack(Material.SEA_LANTERN),
             null),
     MOUTRON("Moutron", "moutron", Collections.singletonList("SOLO"),
             ItemBuilder.asHead(BuildHead.BLUE_SHEEP).build(),
             MoutronConfig.class),
-    PITCH_OUT("GetDown", "getdown", Collections.singletonList("SOLO"),
+    PITCH_OUT("PitchOut", "pitchout", Collections.singletonList("SOLO"),
             new ItemStack(Material.SNOW_BALL),
             null),
 

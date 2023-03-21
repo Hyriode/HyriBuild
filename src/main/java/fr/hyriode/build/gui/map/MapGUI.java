@@ -1,5 +1,6 @@
 package fr.hyriode.build.gui.map;
 
+import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.config.IHyriConfig;
 import fr.hyriode.api.impl.common.world.HyriWorld;
 import fr.hyriode.api.mongodb.MongoSerializable;
@@ -66,7 +67,7 @@ public class MapGUI extends BuildGUI {
                 event -> {
                     if (this.edited) {
                         new ConfirmGUI(this.owner).withConfirmCallback(e -> {
-                            this.map.getHandle().update();
+                            this.map.update();
                             this.map.updateConfig();
                             this.owner.sendMessage("§3Build §f ┃ Les modifications sur la map '§b" + this.map.getHandle().getName() + "§f' ont été §aappliquées§f.");
                             this.owner.playSound(this.owner.getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
@@ -82,18 +83,18 @@ public class MapGUI extends BuildGUI {
                     }
                 });
 
-        this.setItem(45, ItemBuilder.asHead(HyrameHead.MONITOR_PLUS)
-                .withName("§bImporter la map")
-                .withLore("§7Permet de télécharger la map pour", "§7faire des modifications dessus.", "", "§3Cliquer pour importer la map")
+        this.setItem(45, ItemBuilder.asHead(BuildHead.MONITOR_DOWN)
+                .withName("§bTélécharger la map")
+                .withLore("§7Permet de télécharger la map pour", "§7faire des modifications dessus.", "", "§3Cliquer pour télécharger la map")
                 .build(),
                 event -> {
                     if (this.edited) {
-                        this.owner.sendMessage("§3Build §f ┃ §cImpossible d'importer la map (raison: modifications effectuées) §c!");
+                        this.owner.sendMessage("§3Build §f ┃ §cImpossible de télécharger la map (raison: modifications effectuées) §c!");
                         return;
                     }
 
-                    new AnvilGUI(HyriBuild.get(), this.owner, "Fichier", null, false, e -> Bukkit.getScheduler().runTaskLater(HyriBuild.get(), this::open, 1L), null, null, (p, input) -> {
-                        this.map.getHandle().load(new File("./" + input));
+                    new AnvilGUI(HyriBuild.get(), this.owner, "world", null, false, e -> Bukkit.getScheduler().runTaskLater(HyriBuild.get(), this::open, 1L), null, null, (p, input) -> {
+                        this.map.load(new File("./" + input));
 
                         new WorldCreator(input).environment(World.Environment.NORMAL).createWorld();
 
@@ -102,6 +103,36 @@ public class MapGUI extends BuildGUI {
                         this.open();
 
                         return null;
+                    }).open();
+                });
+
+        this.setItem(46, ItemBuilder.asHead(BuildHead.MONITOR_UP)
+                .withName("§bUploader la map")
+                .withLore("§7Permet de ré-uploader la map pour", "§7appliquer des modifications faites", "§7dessus.", "", "§3Cliquer pour uploader la map")
+                .build(),
+                event -> {
+                    if (this.edited) {
+                        this.owner.sendMessage("§3Build §f ┃ §cImpossible d'uploader la map (raison: modifications effectuées) §c!");
+                        return;
+                    }
+
+                    if (!PermissionsProvider.getPermissions(this.owner).hasWithError(Permissions.Action.RE_UPLOAD, this.map.getEnvironment())) {
+                        return;
+                    }
+
+                    new ConfirmGUI(this.owner).withConfirmCallback(e -> {
+                        this.map.save(this.owner.getWorld().getUID());
+
+                        HyriBuild.get().getWebhook().sendMapMessage(this.owner, this.map, "Map modifiée", "Les fichiers de la map ont été modifiés.", DiscordColor.BLUE);
+
+                        this.owner.sendMessage("§3Build §f ┃ La map '§b" + this.map.getHandle().getName() + "§f' a correctement été upload §8(monde: " + this.owner.getWorld().getName() + ")§f.");
+                        this.owner.playSound(this.owner.getLocation(), Sound.LEVEL_UP, 1.0F, 1.0F);
+
+                        this.goBack();
+                    }).withCancelCallback(e -> {
+                        this.owner.sendMessage("§3Build §f ┃ Action §cannulée§f.");
+
+                        this.open();
                     }).open();
                 });
 
@@ -145,7 +176,7 @@ public class MapGUI extends BuildGUI {
 
                     if (PermissionsProvider.getPermissions(this.owner).hasWithError(Permissions.Action.DELETE, this.map.getEnvironment())) {
                         new ConfirmGUI(this.owner).withConfirmCallback(e -> {
-                            this.map.getHandle().delete();
+                            this.map.delete();
                             this.map.deleteConfig();
 
                             HyriBuild.get().getWebhook().sendMapMessage(this.owner, this.map, "Map supprimée", "La map " + (this.map.hasConfig() ? "ainsi que sa configuration ont été supprimées." : "a été supprimée."), DiscordColor.RED);
@@ -259,7 +290,7 @@ public class MapGUI extends BuildGUI {
                 .build(),
                 event -> {
                     if (PermissionsProvider.getPermissions(this.owner).hasWithError(Permissions.Action.CHANGE_STATE, this.map.getEnvironment())) {
-                        if (this.config == null) {
+                        if (this.config == null && this.category.hasConfig()) {
                             this.owner.sendMessage("§3Build §f ┃ §cImpossible de changer l'état de la map (raison: configuration manquante) §c!");
                             return;
                         }

@@ -68,6 +68,8 @@ public class ConfigProcess<T extends IHyriConfig> {
         this.started = true;
         this.initialSize = this.steps.size();
 
+        this.player.getInventory().clear();
+
         this.sendMessage(builder -> builder.append("§7Démarrage d'un processus de création de §bconfiguration§7...\n§7Informations:\n§8▪ §b" + this.initialSize + " §7valeur(s) à définir.\n§8▪ §7Type de configuration: §b" + this.configData.name()));
         Title.sendTitle(this.player, "§bCréation d'une configuration", this.configData.name(), 5, 3 * 20, 10);
 
@@ -87,14 +89,6 @@ public class ConfigProcess<T extends IHyriConfig> {
 
             this.currentStep.setHandler(handler);
 
-            handler.getCompletion().whenComplete((BiConsumer<Object, Throwable>) (object, throwable) -> {
-                Title.sendTitle(this.player, ChatColor.GREEN + Symbols.TICK_BOLD + " Validé", "", 2, 30, 2);
-
-                this.write(this.currentStep, category != null ? this.currentStep.getCategoryObject() : this.config, object);
-                this.next();
-            });
-            handler.handle();
-
             this.sendMessage(builder -> {
                 builder.append(" ▪ ").color(ChatColor.DARK_GRAY)
                         .append("Nouvelle valeur à définir: ").color(ChatColor.GRAY)
@@ -112,6 +106,14 @@ public class ConfigProcess<T extends IHyriConfig> {
                         .append("Description: ").color(ChatColor.GRAY)
                         .append(option.description()).color(ChatColor.WHITE);
             });
+
+            handler.getCompletion().whenComplete((BiConsumer<Object, Throwable>) (object, throwable) -> {
+                Title.sendTitle(this.player, ChatColor.GREEN + Symbols.TICK_BOLD + " Validé", "", 2, 30, 2);
+
+                this.write(this.currentStep, category != null ? this.currentStep.getCategoryObject() : this.config, object);
+                this.next();
+            });
+            handler.handle();
         } else {
             this.sendMessage(builder -> builder.append("§7La §bconfiguration §7de la map est §aterminée§7."));
             Title.sendTitle(this.player, ChatColor.GREEN + Symbols.TICK_BOLD +  " Terminée", "La configuration est prête à l'utilisation", 5, 3 * 20, 10);
@@ -160,6 +162,15 @@ public class ConfigProcess<T extends IHyriConfig> {
                 .append("\n" + Symbols.HYPHENS_LINE).strikethrough(true).color(ChatColor.DARK_GRAY);
 
         this.player.spigot().sendMessage(builder.create());
+    }
+
+    /**
+     * Get the config
+     *
+     * @return The config instance
+     */
+    public T getConfig() {
+        return this.config;
     }
 
     /**
@@ -233,5 +244,5 @@ public class ConfigProcess<T extends IHyriConfig> {
     public int initialSize() {
         return this.initialSize;
     }
-    
+
 }

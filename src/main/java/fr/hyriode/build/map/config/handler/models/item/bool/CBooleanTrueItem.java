@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 public class CBooleanTrueItem extends CBooleanItem {
 
     public CBooleanTrueItem(HyriBuild plugin) {
-        super(plugin, "config.boolean-yes", ChatColor.GREEN + Symbols.TICK_BOLD + "Oui", (byte) 10, true);
+        super(plugin, "config.boolean-yes", ChatColor.GREEN + Symbols.TICK_BOLD + "Oui §7(Clic-droit)", (byte) 10, true);
     }
 
 }

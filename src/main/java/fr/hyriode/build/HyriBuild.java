@@ -6,9 +6,17 @@ import fr.hyriode.api.impl.server.world.SHyriWorldManager;
 import fr.hyriode.build.config.Config;
 import fr.hyriode.build.discord.DiscordWebhook;
 import fr.hyriode.build.map.config.ConfigManager;
+import fr.hyriode.build.map.config.models.SheepWarsConfig;
 import fr.hyriode.hyrame.HyrameLoader;
 import fr.hyriode.hyrame.plugin.IPluginProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by AstFaster

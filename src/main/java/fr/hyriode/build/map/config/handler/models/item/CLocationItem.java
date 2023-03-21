@@ -5,10 +5,14 @@ import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.map.config.ConfigProcess;
 import fr.hyriode.build.map.config.ConfigStep;
 import fr.hyriode.build.map.config.handler.ConfigOptionHandler;
+import fr.hyriode.build.map.config.handler.models.AreaHandler;
 import fr.hyriode.build.map.config.handler.models.LocationHandler;
 import fr.hyriode.build.map.config.handler.models.LocationsHandler;
+import fr.hyriode.build.map.config.handler.models.WRLeaderboardsHandler;
 import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.item.HyriItem;
+import fr.hyriode.hyrame.utils.Symbols;
+import jdk.nashorn.internal.ir.Symbol;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -20,7 +24,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class CLocationItem extends HyriItem<HyriBuild> {
 
     public CLocationItem(HyriBuild plugin) {
-        super(plugin, "config.location", () -> HyriLanguageMessage.from("§bDéfinir la location"), null, Material.NETHER_STAR);
+        super(plugin, "config.location", () -> HyriLanguageMessage.from("§bDéfinir la location §7(Clic-droit)"), null, Material.NETHER_STAR);
     }
 
     @Override
@@ -44,6 +48,10 @@ public class CLocationItem extends HyriItem<HyriBuild> {
             ((LocationHandler) handler).provideLocation(player.getLocation());
         } else if (handler instanceof LocationsHandler) {
             ((LocationsHandler) handler).provideLocation(player.getLocation());
+        } else if (handler instanceof AreaHandler) {
+            ((AreaHandler) handler).provideLocation(player.getLocation());
+        } else if (handler instanceof WRLeaderboardsHandler) {
+            ((WRLeaderboardsHandler) handler).provideLocation(player.getLocation());
         }
     }
 

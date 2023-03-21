@@ -2,9 +2,7 @@ package fr.hyriode.build.map;
 
 import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.config.IHyriConfig;
-import fr.hyriode.api.impl.common.world.HyriWorld;
-import fr.hyriode.api.mongodb.MongoSerializable;
-import fr.hyriode.api.mongodb.MongoSerializer;
+import fr.hyriode.api.impl.common.world.WorldCompression;
 import fr.hyriode.api.world.IHyriWorld;
 
 import java.io.File;
@@ -71,7 +69,7 @@ public class Map {
             final String mapName = UUID.randomUUID().toString().split("-")[0];
             final File file = new File("./" + mapName);
 
-            this.handle.load(file);
+            this.load(file);
             Environment.PRODUCTION.getWorldManager().saveWorld(this.handle, file);
 
             Files.walk(file.toPath())
@@ -79,6 +77,22 @@ public class Map {
                     .map(Path::toFile)
                     .forEach(File::delete);
         }
+    }
+
+    public void load(File destination) {
+        this.environment.getWorldManager().loadWorld(this.handle, destination);
+    }
+
+    public void delete() {
+        this.environment.getWorldManager().deleteWorld(this.handle);
+    }
+
+    public void update() {
+        this.environment.getWorldManager().updateWorld(this.handle);
+    }
+
+    public void save(UUID worldId) {
+        this.environment.getWorldManager().saveWorld(this.handle, worldId);
     }
 
     public Environment getEnvironment() {

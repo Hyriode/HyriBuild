@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 public class CBooleanFalseItem extends CBooleanItem {
 
     public CBooleanFalseItem(HyriBuild plugin) {
-        super(plugin, "config.boolean-no", ChatColor.RED + Symbols.CROSS_STYLIZED_BOLD + "Non", (byte) 1, false);
+        super(plugin, "config.boolean-no", ChatColor.RED + Symbols.CROSS_STYLIZED_BOLD + "Non §7(Clic-droit)", (byte) 1, false);
     }
 
 }
