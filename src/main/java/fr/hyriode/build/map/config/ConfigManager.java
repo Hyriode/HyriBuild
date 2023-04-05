@@ -138,7 +138,9 @@ public class ConfigManager {
                 return;
             }
 
-            event.setCancelled(true);
+            if (event.getSlot() == 0) {
+                event.setCancelled(true);
+            }
         }
 
         @EventHandler

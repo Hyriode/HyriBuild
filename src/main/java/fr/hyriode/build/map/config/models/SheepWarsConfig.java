@@ -29,6 +29,14 @@ public class SheepWarsConfig extends GameConfig {
     private Team secondTeam = new Team();
 
     @ConfigOption(
+            type = ConfigOptionType.INTEGER,
+            id = "minmum-y",
+            name = "Y minimum",
+            description = "Position Y à partir de laquelle les joueurs meurent."
+    )
+    private int minY;
+
+    @ConfigOption(
             type = ConfigOptionType.AREA,
             id = "bonus-area",
             name = "Zone d'apparition des bonus",

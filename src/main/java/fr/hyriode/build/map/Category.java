@@ -3,10 +3,10 @@ package fr.hyriode.build.map;
 import fr.hyriode.api.config.IHyriConfig;
 import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.map.config.ConfigProcess;
-import fr.hyriode.build.map.config.models.MoutronConfig;
-import fr.hyriode.build.map.config.models.RushTheFlagConfig;
-import fr.hyriode.build.map.config.models.SheepWarsConfig;
-import fr.hyriode.build.map.config.models.TheRunnerConfig;
+import fr.hyriode.build.map.config.models.*;
+import fr.hyriode.build.map.config.models.getdown.GDDeathmatchConfig;
+import fr.hyriode.build.map.config.models.getdown.GDJumpConfig;
+import fr.hyriode.build.map.config.models.getdown.GetDownConfig;
 import fr.hyriode.build.util.BuildHead;
 import fr.hyriode.hyrame.item.ItemBuilder;
 import org.bukkit.Material;
@@ -32,7 +32,7 @@ public enum Category {
             null),
     BRIDGER("Bridger", "bridger", Arrays.asList("SHORT", "NORMAL", "DIAGONAL"),
             new ItemStack(Material.SANDSTONE),
-            null),
+            BridgerConfig.class),
     SHEEP_WARS("SheepWars", "sheepwars", Collections.singletonList("FIVE_FIVE"),
             new ItemStack(Material.WOOL),
             SheepWarsConfig.class),
@@ -45,9 +45,21 @@ public enum Category {
     RUSH_THE_FLAG("RushTheFlag", "rushtheflag", Arrays.asList("SOLO", "DOUBLES", "MDT"),
             new ItemStack(Material.BANNER, 1, (short) 15),
             RushTheFlagConfig.class),
+
+    // GetDown part
+
     GET_DOWN("GetDown", "getdown", Collections.singletonList("NORMAL"),
             new ItemStack(Material.SEA_LANTERN),
-            null),
+            GetDownConfig.class),
+    GET_DOWN_JUMP("GetDown - Jump", "getdown", Collections.singletonList("maps-jump"),
+            new ItemStack(Material.SEA_LANTERN),
+            GDJumpConfig.class),
+    GET_DOWN_DEATHMATCH("GetDown - Deathmatch", "getdown", Collections.singletonList("maps-deathmatches"),
+            new ItemStack(Material.SEA_LANTERN),
+            GDDeathmatchConfig.class),
+
+    //
+
     MOUTRON("Moutron", "moutron", Collections.singletonList("SOLO"),
             ItemBuilder.asHead(BuildHead.BLUE_SHEEP).build(),
             MoutronConfig.class),

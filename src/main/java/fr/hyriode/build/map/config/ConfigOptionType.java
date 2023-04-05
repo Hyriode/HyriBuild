@@ -12,14 +12,19 @@ import java.util.function.Function;
 public enum ConfigOptionType {
 
     BOOLEAN(BooleanHandler::new),
+    INTEGER(IntegerHandler::new),
 
     LOCATION(process -> new LocationHandler(process, false, false)),
     BLOCK_LOCATION(process -> new LocationHandler(process, false, true)),
     PLAYER_LOCATION(process -> new LocationHandler(process, true, false)),
 
+    LOCATIONS_DIFFERENCE(LocationsDifferenceHandler::new),
+
     LOCATIONS(process -> new LocationsHandler(process, false, false)),
     BLOCK_LOCATIONS(process -> new LocationsHandler(process, false, true)),
     PLAYER_LOCATIONS(process -> new LocationsHandler(process, true, false)),
+
+    BLOCKS(BlocksHandler::new),
 
     AREA(AreaHandler::new),
 

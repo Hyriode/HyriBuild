@@ -5,10 +5,7 @@ import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.map.config.ConfigProcess;
 import fr.hyriode.build.map.config.ConfigStep;
 import fr.hyriode.build.map.config.handler.ConfigOptionHandler;
-import fr.hyriode.build.map.config.handler.models.AreaHandler;
-import fr.hyriode.build.map.config.handler.models.LocationHandler;
-import fr.hyriode.build.map.config.handler.models.LocationsHandler;
-import fr.hyriode.build.map.config.handler.models.WRLeaderboardsHandler;
+import fr.hyriode.build.map.config.handler.models.*;
 import fr.hyriode.hyrame.IHyrame;
 import fr.hyriode.hyrame.item.HyriItem;
 import fr.hyriode.hyrame.utils.Symbols;
@@ -52,6 +49,8 @@ public class CLocationItem extends HyriItem<HyriBuild> {
             ((AreaHandler) handler).provideLocation(player.getLocation());
         } else if (handler instanceof WRLeaderboardsHandler) {
             ((WRLeaderboardsHandler) handler).provideLocation(player.getLocation());
+        } else if (handler instanceof LocationsDifferenceHandler) {
+            ((LocationsDifferenceHandler) handler).provideLocation(player.getLocation());
         }
     }
 

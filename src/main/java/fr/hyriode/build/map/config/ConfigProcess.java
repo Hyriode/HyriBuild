@@ -14,8 +14,10 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Created by AstFaster
