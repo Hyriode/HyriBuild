@@ -4,7 +4,9 @@ import fr.hyriode.build.map.config.ConfigOption;
 import fr.hyriode.build.map.config.ConfigOptionType;
 import fr.hyriode.hyrame.utils.LocationWrapper;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,14 +53,45 @@ public class WRConfig {
             name = "Classements waiting room",
             description = "Lieux où seront placés les classements du mini-jeu."
     )
-    private Map<String, LocationWrapper> leaderboards = new HashMap<>();
+    private List<Leaderboard> leaderboards = new ArrayList<>();
 
-    public void registerLeaderboard(String key) {
-        this.leaderboards.put(key, null);
+    public void registerLeaderboard(Leaderboard leaderboard) {
+        this.leaderboards.add(leaderboard);
     }
 
-    public Map<String, LocationWrapper> getLeaderboards() {
+    public List<Leaderboard> getLeaderboards() {
         return this.leaderboards;
+    }
+
+    public static class Leaderboard {
+
+        private final String type;
+        private final String name;
+        private LocationWrapper location;
+
+        public Leaderboard(String type, String name) {
+            this.type = type;
+            this.name = name;
+        }
+
+        public Leaderboard(String type, String name, LocationWrapper location) {
+            this.type = type;
+            this.name = name;
+            this.location = location;
+        }
+
+        public String getType() {
+            return this.type;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public LocationWrapper getLocation() {
+            return this.location;
+        }
+
     }
 
 }

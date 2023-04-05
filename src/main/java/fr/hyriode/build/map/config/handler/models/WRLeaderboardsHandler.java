@@ -12,17 +12,20 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Created by AstFaster
  * on 14/03/2023 at 19:03
  */
-public class WRLeaderboardsHandler extends ConfigOptionHandler<Map<String, LocationWrapper>> {
+public class WRLeaderboardsHandler extends ConfigOptionHandler<List<WRConfig.Leaderboard>> {
 
     private WRConfig waitingRoom;
 
-    private String currentLeaderboard;
+    private final List<WRConfig.Leaderboard> result = new ArrayList<>();
+
+    private WRConfig.Leaderboard currentLeaderboard;
     private int index = 0;
 
     public WRLeaderboardsHandler(ConfigProcess<?> process) {
@@ -34,13 +37,13 @@ public class WRLeaderboardsHandler extends ConfigOptionHandler<Map<String, Locat
         this.waitingRoom = ((GameConfig) this.process.getConfig()).getWaitingRoom();
 
         if (this.waitingRoom.getLeaderboards().size() > 0) {
-            this.currentLeaderboard = new ArrayList<>(this.waitingRoom.getLeaderboards().keySet()).get(this.index);
+            this.currentLeaderboard =this.waitingRoom.getLeaderboards().get(this.index);
 
             this.process.sendMessage(builder -> builder.append("§7Classement à définir: §b" + this.currentLeaderboard + "§7."));
 
             Title.sendTitle(this.player,
                     ChatColor.AQUA + "Classement " + this.index + "/" + this.waitingRoom.getLeaderboards().size(),
-                    this.currentLeaderboard,
+                    this.currentLeaderboard.getName(),
                     2, 25, 2);
 
             IHyrame.get().getItemManager().giveItem(this.player, 0, CLocationItem.class);
@@ -55,22 +58,22 @@ public class WRLeaderboardsHandler extends ConfigOptionHandler<Map<String, Locat
 
         final LocationWrapper result = new LocationWrapper(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
-        this.currentLeaderboard = new ArrayList<>(this.waitingRoom.getLeaderboards().keySet()).get(this.index);
+        this.currentLeaderboard = this.waitingRoom.getLeaderboards().get(this.index);
         this.index += 1;
 
         this.process.sendMessage(builder -> builder.append("§7Classement à définir: §b" + this.currentLeaderboard + "§7."));
 
         Title.sendTitle(this.player,
                 ChatColor.AQUA + "Classement " + this.index + "/" + this.waitingRoom.getLeaderboards().size(),
-                this.currentLeaderboard,
+                this.currentLeaderboard.getName(),
                 2, 25, 2);
 
-        this.waitingRoom.getLeaderboards().put(currentLeaderboard, result);
+        this.result.add(new WRConfig.Leaderboard(this.currentLeaderboard.getType(), this.currentLeaderboard.getName(), result));
 
         if (this.index == this.waitingRoom.getLeaderboards().size()) {
             this.player.getInventory().clear();
 
-            this.complete(this.waitingRoom.getLeaderboards());
+            this.complete(this.result);
         }
     }
 

@@ -4,6 +4,7 @@ import fr.hyriode.build.map.config.ConfigData;
 import fr.hyriode.build.map.config.ConfigOption;
 import fr.hyriode.build.map.config.ConfigOptionCategory;
 import fr.hyriode.build.map.config.ConfigOptionType;
+import fr.hyriode.build.map.config.models.nested.WRConfig;
 import fr.hyriode.hyrame.utils.AreaWrapper;
 import fr.hyriode.hyrame.utils.LocationWrapper;
 
@@ -62,7 +63,13 @@ public class RushTheFlagConfig extends GameConfig {
         )
         private List<LocationWrapper> flags;
 
+    }
 
+    public RushTheFlagConfig() {
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("network-leveling", "rotating-game-experience"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("rushtheflag", "flags-brought-back"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("rushtheflag", "victories"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("rushtheflag", "kills"));
     }
 
 }

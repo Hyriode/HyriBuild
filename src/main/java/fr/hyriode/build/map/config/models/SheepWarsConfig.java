@@ -4,6 +4,7 @@ import fr.hyriode.build.map.config.ConfigData;
 import fr.hyriode.build.map.config.ConfigOption;
 import fr.hyriode.build.map.config.ConfigOptionCategory;
 import fr.hyriode.build.map.config.ConfigOptionType;
+import fr.hyriode.build.map.config.models.nested.WRConfig;
 import fr.hyriode.hyrame.utils.AreaWrapper;
 import fr.hyriode.hyrame.utils.LocationWrapper;
 
@@ -54,6 +55,13 @@ public class SheepWarsConfig extends GameConfig {
         )
         private List<LocationWrapper> spawns;
 
+    }
+
+    public SheepWarsConfig() {
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("network-leveling", "rotating-game-experience"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("sheepwars", "sheeps-launched"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("sheepwars", "victories"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("sheepwars", "kills"));
     }
 
 }
