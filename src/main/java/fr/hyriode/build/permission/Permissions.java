@@ -38,22 +38,22 @@ public class Permissions {
     public enum Action {
 
         DELETE((rank, environment) -> rank.isSuperior(StaffRank.MANAGER)),
-        UPLOAD((rank, environment) -> rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER)),
+        UPLOAD((rank, environment) -> rank.isSuperior(StaffRank.BUILDER)),
         RE_UPLOAD((rank, environment) -> {
             if (environment == Environment.PRODUCTION) {
                 return rank.isSuperior(StaffRank.MANAGER);
             } else if (environment == Environment.DEVELOPMENT) {
-                return rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER);
+                return rank.isSuperior(StaffRank.BUILDER);
             }
             return false;
         }),
-        IMPORT((rank, environment) -> rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER)),
+        IMPORT((rank, environment) -> rank.isSuperior(StaffRank.BUILDER)),
         TRANSFER((rank, environment) -> rank.isSuperior(StaffRank.MANAGER)),
         CHANGE_STATE((rank, environment) -> {
             if (environment == Environment.PRODUCTION) {
                 return rank.isSuperior(StaffRank.MANAGER);
             } else if (environment == Environment.DEVELOPMENT) {
-                return rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER);
+                return rank.isSuperior(StaffRank.BUILDER);
             }
             return false;
         }),
@@ -61,7 +61,7 @@ public class Permissions {
             if (environment == Environment.PRODUCTION) {
                 return rank.isSuperior(StaffRank.MANAGER);
             } else if (environment == Environment.DEVELOPMENT) {
-                return rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER);
+                return rank.isSuperior(StaffRank.BUILDER);
             }
             return false;
         }),
@@ -69,7 +69,7 @@ public class Permissions {
             if (environment == Environment.PRODUCTION) {
                 return rank.isSuperior(StaffRank.MANAGER);
             } else if (environment == Environment.DEVELOPMENT) {
-                return rank.isSuperior(StaffRank.MANAGER) || rank.is(StaffRank.BUILDER);
+                return rank.isSuperior(StaffRank.BUILDER);
             }
             return false;
         }),

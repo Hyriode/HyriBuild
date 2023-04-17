@@ -17,6 +17,8 @@ public class ConfigStep {
     private final ConfigOptionCategory category;
     /** The object of the category */
     private final Object categoryObject;
+    /** The identifier of the element if it is in a list */
+    private final String listMemberId;
     /** The option of the config field to set */
     private final ConfigOption option;
     /** The field to set */
@@ -28,13 +30,15 @@ public class ConfigStep {
     /**
      * Constructor of {@link ConfigStep}
      *
-     * @param category The category of the option
+     * @param category       The category of the option
      * @param categoryObject The object of the category
-     * @param option The option
-     * @param field The field
+     * @param listMemberId   The identifier of the element in a list
+     * @param option         The option
+     * @param field          The field
      */
-    public ConfigStep(ConfigOptionCategory category, Object categoryObject, ConfigOption option, Field field) {
+    public ConfigStep(ConfigOptionCategory category, Object categoryObject, String listMemberId, ConfigOption option, Field field) {
         this.categoryObject = categoryObject;
+        this.listMemberId = listMemberId;
         this.option = option;
         this.category = category;
         this.field = field;
@@ -65,6 +69,10 @@ public class ConfigStep {
      */
     public Object getCategoryObject() {
         return this.categoryObject;
+    }
+
+    public String getListMemberId() {
+        return this.listMemberId;
     }
 
     /**

@@ -25,11 +25,10 @@ public enum ConfigOptionType {
     PLAYER_LOCATIONS(process -> new LocationsHandler(process, true, false)),
 
     BLOCKS(BlocksHandler::new),
-
     AREA(AreaHandler::new),
+    AREAS(AreasHandler::new),
 
     WAITING_ROOM_LEADERBOARDS(WRLeaderboardsHandler::new),
-
 
     ;
 

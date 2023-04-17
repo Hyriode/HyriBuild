@@ -66,7 +66,7 @@ public class RushTheFlagConfig extends GameConfig {
     }
 
     public RushTheFlagConfig() {
-        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("network-leveling", "rotating-game-experience"));
+        this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("network-leveling", "rushtheflag-experience"));
         this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("rushtheflag", "flags-brought-back"));
         this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("rushtheflag", "victories"));
         this.getWaitingRoom().registerLeaderboard(new WRConfig.Leaderboard("rushtheflag", "kills"));

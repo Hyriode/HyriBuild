@@ -20,7 +20,7 @@ import java.util.List;
  * Created by AstFaster
  * on 01/06/2022 at 13:36
  */
-public class LocationsHandler extends ConfigOptionHandler<List<LocationWrapper>> {
+public class LocationsHandler extends ConfigOptionHandler<List<LocationWrapper>> implements ILocationConsumer {
 
     private final List<LocationWrapper> result = new ArrayList<>();
 
@@ -40,8 +40,13 @@ public class LocationsHandler extends ConfigOptionHandler<List<LocationWrapper>>
         new SignGUI((player, lines) -> {
             final String input = lines[0];
 
-            if (PrimitiveType.INTEGER.isValid(input) && PrimitiveType.INTEGER.parse(input) > 0) {
+            if (PrimitiveType.INTEGER.isValid(input) && PrimitiveType.INTEGER.parse(input) >= 0) {
                 this.size = PrimitiveType.INTEGER.parse(input);
+
+                if (this.size == 0) {
+                    this.complete(new ArrayList<>());
+                    return;
+                }
 
                 IHyrame.get().getItemManager().giveItem(this.player, 0, CLocationItem.class);
             } else {
@@ -52,6 +57,7 @@ public class LocationsHandler extends ConfigOptionHandler<List<LocationWrapper>>
         }).withLines("", "^^^^^^^^", "Nombre de", "locations").open(this.player);
     }
 
+    @Override
     public void provideLocation(Location location) {
         final LocationWrapper newLocation = new LocationWrapper(
                 this.rounded ? location.getBlockX() : location.getX(),

@@ -1,10 +1,6 @@
 package fr.hyriode.build.gui.map;
 
-import fr.hyriode.api.HyriAPI;
 import fr.hyriode.api.config.IHyriConfig;
-import fr.hyriode.api.impl.common.world.HyriWorld;
-import fr.hyriode.api.mongodb.MongoSerializable;
-import fr.hyriode.api.mongodb.MongoSerializer;
 import fr.hyriode.api.world.IHyriWorld;
 import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.discord.DiscordColor;
@@ -13,10 +9,10 @@ import fr.hyriode.build.gui.ConfirmGUI;
 import fr.hyriode.build.map.Category;
 import fr.hyriode.build.map.Environment;
 import fr.hyriode.build.map.Map;
+import fr.hyriode.build.map.MapUtils;
 import fr.hyriode.build.permission.Permissions;
 import fr.hyriode.build.permission.PermissionsProvider;
 import fr.hyriode.build.util.BuildHead;
-import fr.hyriode.build.map.MapUtils;
 import fr.hyriode.hyrame.anvilgui.AnvilGUI;
 import fr.hyriode.hyrame.item.ItemBuilder;
 import fr.hyriode.hyrame.utils.HyrameHead;
@@ -25,7 +21,9 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by AstFaster
@@ -49,7 +47,7 @@ public class MapGUI extends BuildGUI {
 
         final IHyriWorld handle = this.map.getHandle();
 
-        if (this.config == null && handle.isEnabled()) {
+        if (this.config == null && handle.isEnabled() && this.category.hasConfig(this.map.getHandle().getCategory())) {
             handle.setEnabled(false);
             handle.update();
         }
@@ -193,7 +191,7 @@ public class MapGUI extends BuildGUI {
                     }
                 });
 
-        if (this.category.hasConfig()) {
+        if (this.category.hasConfig(this.map.getHandle().getCategory())) {
             this.setItem(25, new ItemBuilder(Material.REDSTONE_COMPARATOR)
                     .withName("§bConfiguration")
                     .withLore("§7Modifie et gère la configuration", "§7actuelle de la map.", "", "§8Statut:", "§8 ▪ " + (this.config != null ? "§aFaite" : "§cA faire"), "", (this.config != null ? "§cCliquer pour refaire" : "§3Cliquer pour faire"))
@@ -207,7 +205,7 @@ public class MapGUI extends BuildGUI {
                         if (PermissionsProvider.getPermissions(this.owner).hasWithError(Permissions.Action.CREATE_CONFIG, this.map.getEnvironment())) {
                             this.owner.closeInventory();
 
-                            this.category.newConfigProcess(this.owner).withFinishCallback(config -> new ConfirmGUI(this.owner).withConfirmCallback(e -> {
+                            this.category.newConfigProcess(this.map.getHandle().getCategory(), this.owner).withFinishCallback(config -> new ConfirmGUI(this.owner).withConfirmCallback(e -> {
                                 if (!this.map.hasConfig()) {
                                     HyriBuild.get().getWebhook().sendMapMessage(this.owner, this.map, "Configuration ajoutée", "La configuration de la map a été ajoutée.", DiscordColor.GREEN);
                                 } else {
@@ -290,7 +288,7 @@ public class MapGUI extends BuildGUI {
                 .build(),
                 event -> {
                     if (PermissionsProvider.getPermissions(this.owner).hasWithError(Permissions.Action.CHANGE_STATE, this.map.getEnvironment())) {
-                        if (this.config == null && this.category.hasConfig()) {
+                        if (this.config == null && this.category.hasConfig(this.map.getHandle().getCategory())) {
                             this.owner.sendMessage("§3Build §f ┃ §cImpossible de changer l'état de la map (raison: configuration manquante) §c!");
                             return;
                         }
@@ -306,7 +304,7 @@ public class MapGUI extends BuildGUI {
     }
 
     private void addCategoryItem() {
-        if (this.category.getTypes() == null) {
+        if (this.category.getTypes().isEmpty()) {
             return;
         }
 

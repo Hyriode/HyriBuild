@@ -13,7 +13,7 @@ import org.bukkit.Location;
  * Created by AstFaster
  * on 01/06/2022 at 13:36
  */
-public class LocationsDifferenceHandler extends ConfigOptionHandler<LocationWrapper> {
+public class LocationsDifferenceHandler extends ConfigOptionHandler<LocationWrapper> implements ILocationConsumer {
 
     private LocationWrapper first;
 
@@ -26,6 +26,7 @@ public class LocationsDifferenceHandler extends ConfigOptionHandler<LocationWrap
         IHyrame.get().getItemManager().giveItem(this.player, 0, CLocationItem.class);
     }
 
+    @Override
     public void provideLocation(Location location) {
         final LocationWrapper newLocation = new LocationWrapper(
                 location.getBlockX(),

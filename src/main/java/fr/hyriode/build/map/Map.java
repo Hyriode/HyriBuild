@@ -33,8 +33,8 @@ public class Map {
 
         this.loadInitial();
 
-        if (this.category.hasConfig()) {
-            this.config = this.environment.getConfigManager().getConfig(this.category.getConfigClass(), this.category.getDatabase(), this.handle.getCategory(), this.handle.getName());
+        if (this.category.hasConfig(this.handle.getCategory())) {
+            this.config = this.environment.getConfigManager().getConfig(this.category.getConfigClass(this.handle.getCategory()), this.category.getDatabase(), this.handle.getCategory(), this.handle.getName());
         }
     }
 
@@ -58,8 +58,8 @@ public class Map {
             return false;
         }
 
-        if (this.category.hasConfig()) {
-            this.config = this.environment.getConfigManager().getConfig(this.category.getConfigClass(), this.category.getDatabase(), this.handle.getCategory(), this.handle.getName());
+        if (this.category.hasConfig(this.handle.getCategory())) {
+            this.config = this.environment.getConfigManager().getConfig(this.category.getConfigClass(this.handle.getCategory()), this.category.getDatabase(), this.handle.getCategory(), this.handle.getName());
         }
         return true;
     }

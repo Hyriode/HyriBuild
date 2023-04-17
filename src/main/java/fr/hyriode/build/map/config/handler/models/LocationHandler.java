@@ -11,7 +11,7 @@ import org.bukkit.Location;
  * Created by AstFaster
  * on 01/06/2022 at 13:36
  */
-public class LocationHandler extends ConfigOptionHandler<LocationWrapper> {
+public class LocationHandler extends ConfigOptionHandler<LocationWrapper> implements ILocationConsumer {
 
     private final boolean direction;
     private final boolean rounded;
@@ -27,6 +27,7 @@ public class LocationHandler extends ConfigOptionHandler<LocationWrapper> {
         IHyrame.get().getItemManager().giveItem(this.player, 0, CLocationItem.class);
     }
 
+    @Override
     public void provideLocation(Location location) {
         final LocationWrapper result = new LocationWrapper(
                 this.rounded ? location.getBlockX() : location.getX(),

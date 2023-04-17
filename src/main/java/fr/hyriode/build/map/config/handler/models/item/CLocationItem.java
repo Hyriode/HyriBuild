@@ -41,16 +41,8 @@ public class CLocationItem extends HyriItem<HyriBuild> {
 
         final ConfigOptionHandler<?> handler = step.getHandler();
 
-        if (handler instanceof LocationHandler) {
-            ((LocationHandler) handler).provideLocation(player.getLocation());
-        } else if (handler instanceof LocationsHandler) {
-            ((LocationsHandler) handler).provideLocation(player.getLocation());
-        } else if (handler instanceof AreaHandler) {
-            ((AreaHandler) handler).provideLocation(player.getLocation());
-        } else if (handler instanceof WRLeaderboardsHandler) {
-            ((WRLeaderboardsHandler) handler).provideLocation(player.getLocation());
-        } else if (handler instanceof LocationsDifferenceHandler) {
-            ((LocationsDifferenceHandler) handler).provideLocation(player.getLocation());
+        if (handler instanceof ILocationConsumer) {
+            ((ILocationConsumer) handler).provideLocation(player.getLocation());
         }
     }
 

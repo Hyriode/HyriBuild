@@ -19,7 +19,7 @@ import java.util.Map;
  * Created by AstFaster
  * on 14/03/2023 at 19:03
  */
-public class WRLeaderboardsHandler extends ConfigOptionHandler<List<WRConfig.Leaderboard>> {
+public class WRLeaderboardsHandler extends ConfigOptionHandler<List<WRConfig.Leaderboard>> implements ILocationConsumer {
 
     private WRConfig waitingRoom;
 
@@ -37,9 +37,9 @@ public class WRLeaderboardsHandler extends ConfigOptionHandler<List<WRConfig.Lea
         this.waitingRoom = ((GameConfig) this.process.getConfig()).getWaitingRoom();
 
         if (this.waitingRoom.getLeaderboards().size() > 0) {
-            this.currentLeaderboard =this.waitingRoom.getLeaderboards().get(this.index);
+            this.currentLeaderboard = this.waitingRoom.getLeaderboards().get(this.index);
 
-            this.process.sendMessage(builder -> builder.append("§7Classement à définir: §b" + this.currentLeaderboard + "§7."));
+            this.process.sendMessage(builder -> builder.append("§7Classement à définir: §b" + this.currentLeaderboard.getName() + "§7."));
 
             Title.sendTitle(this.player,
                     ChatColor.AQUA + "Classement " + this.index + "/" + this.waitingRoom.getLeaderboards().size(),
@@ -53,27 +53,30 @@ public class WRLeaderboardsHandler extends ConfigOptionHandler<List<WRConfig.Lea
         this.complete(this.waitingRoom.getLeaderboards());
     }
 
+    @Override
     public void provideLocation(Location location) {
-        location.add(location.getBlockX() > 0 ? 0.5 : -0.5, 0.0, location.getBlockZ() > 0 ? 0.5 : -0.5);
+        location.setX(location.getBlockX() + (location.getBlockX() > 0 ? 0.5 : -0.5));
+        location.setZ(location.getBlockZ() + (location.getBlockZ() > 0 ? 0.5 : -0.5));
 
-        final LocationWrapper result = new LocationWrapper(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-
-        this.currentLeaderboard = this.waitingRoom.getLeaderboards().get(this.index);
-        this.index += 1;
-
-        this.process.sendMessage(builder -> builder.append("§7Classement à définir: §b" + this.currentLeaderboard + "§7."));
-
-        Title.sendTitle(this.player,
-                ChatColor.AQUA + "Classement " + this.index + "/" + this.waitingRoom.getLeaderboards().size(),
-                this.currentLeaderboard.getName(),
-                2, 25, 2);
+        final LocationWrapper result = new LocationWrapper(location);
 
         this.result.add(new WRConfig.Leaderboard(this.currentLeaderboard.getType(), this.currentLeaderboard.getName(), result));
+
+        this.index += 1;
 
         if (this.index == this.waitingRoom.getLeaderboards().size()) {
             this.player.getInventory().clear();
 
             this.complete(this.result);
+        } else {
+            this.currentLeaderboard = this.waitingRoom.getLeaderboards().get(this.index);
+
+            this.process.sendMessage(builder -> builder.append("§7Classement à définir: §b" + this.currentLeaderboard.getName() + "§7."));
+
+            Title.sendTitle(this.player,
+                    ChatColor.AQUA + "Classement " + this.index + "/" + this.waitingRoom.getLeaderboards().size(),
+                    this.currentLeaderboard.getName(),
+                    2, 25, 2);
         }
     }
 

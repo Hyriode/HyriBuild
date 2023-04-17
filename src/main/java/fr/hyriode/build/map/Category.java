@@ -4,6 +4,7 @@ import fr.hyriode.api.config.IHyriConfig;
 import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.map.config.ConfigProcess;
 import fr.hyriode.build.map.config.models.*;
+import fr.hyriode.build.map.config.models.bedwars.*;
 import fr.hyriode.build.map.config.models.getdown.GDDeathmatchConfig;
 import fr.hyriode.build.map.config.models.getdown.GDJumpConfig;
 import fr.hyriode.build.map.config.models.getdown.GetDownConfig;
@@ -13,9 +14,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Created by AstFaster
@@ -24,73 +25,82 @@ import java.util.List;
 public enum Category {
 
     // Games
-    BED_WARS("BedWars", "bedwars", Arrays.asList("SOLO", "DOUBLES", "TRIO", "SQUAD", "ONE_ONE"),
+    BED_WARS("BedWars", "bedwars",
             new ItemStack(Material.BED),
-            null),
-    PEARL_CONTROL("PearlControl", "pearlcontrol", Collections.singletonList("NORMAL"),
+            types -> {
+                types.put("SOLO", BedWarsConfig_SOLO.class);
+                types.put("DOUBLES", BedWarsConfig_DOUBLES.class);
+                types.put("TRIO", BedWarsConfig_TRIO.class);
+                types.put("SQUAD", BedWarsConfig_SQUAD.class);
+                types.put("ONE_ONE", BedWarsConfig_ONE_ONE.class);
+            }),
+    PEARL_CONTROL("PearlControl", "pearlcontrol",
             new ItemStack(Material.ENDER_PEARL),
-            null),
-    BRIDGER("Bridger", "bridger", Arrays.asList("SHORT", "NORMAL", "DIAGONAL"),
+            types -> types.put("NORMAL", PearlControlConfig.class)),
+    BRIDGER("Bridger", "bridger",
             new ItemStack(Material.SANDSTONE),
-            BridgerConfig.class),
-    SHEEP_WARS("SheepWars", "sheepwars", Collections.singletonList("FIVE_FIVE"),
+            types -> {
+                types.put("SHORT", BridgerConfig.class);
+                types.put("NORMAL", BridgerConfig.class);
+                types.put("DIAGONAL", BridgerConfig.class);
+            }),
+    SHEEP_WARS("SheepWars", "sheepwars",
             new ItemStack(Material.WOOL),
-            SheepWarsConfig.class),
-    LASER_GAME("LaserGame", "lasergame", Collections.singletonList("FIVE_FIVE"),
+            types -> types.put("FIVE_FIVE", SheepWarsConfig.class)),
+    LASER_GAME("LaserGame", "lasergame",
             new ItemStack(Material.IRON_HOE),
-            null),
-    THE_RUNNER("TheRunner", "therunner", Arrays.asList("SOLO", "DOUBLES"),
+            types -> types.put("FIVE_FIVE", LaserGameConfig.class)),
+    THE_RUNNER("TheRunner", "therunner",
             new ItemStack(Material.DIAMOND_BOOTS),
-            TheRunnerConfig.class),
-    RUSH_THE_FLAG("RushTheFlag", "rushtheflag", Arrays.asList("SOLO", "DOUBLES", "MDT"),
+            types -> {
+                types.put("SOLO", TheRunnerConfig.class);
+                types.put("DOUBLES", TheRunnerConfig.class);
+            }),
+    RUSH_THE_FLAG("RushTheFlag", "rushtheflag",
             new ItemStack(Material.BANNER, 1, (short) 15),
-            RushTheFlagConfig.class),
-
-    // GetDown part
-
-    GET_DOWN("GetDown", "getdown", Collections.singletonList("NORMAL"),
+            types -> {
+                types.put("SOLO", RushTheFlagConfig.class);
+                types.put("DOUBLES", RushTheFlagConfig.class);
+                types.put("MDT", RushTheFlagConfig.class);
+            }),
+    GET_DOWN("GetDown", "getdown",
             new ItemStack(Material.SEA_LANTERN),
-            GetDownConfig.class),
-    GET_DOWN_JUMP("GetDown - Jump", "getdown", Collections.singletonList("maps-jump"),
-            new ItemStack(Material.SEA_LANTERN),
-            GDJumpConfig.class),
-    GET_DOWN_DEATHMATCH("GetDown - Deathmatch", "getdown", Collections.singletonList("maps-deathmatches"),
-            new ItemStack(Material.SEA_LANTERN),
-            GDDeathmatchConfig.class),
-
-    //
-
-    MOUTRON("Moutron", "moutron", Collections.singletonList("SOLO"),
+            types -> {
+                types.put("NORMAL", GetDownConfig.class);
+                types.put("maps-jump", GDJumpConfig.class);
+                types.put("maps-deathmatches", GDDeathmatchConfig.class);
+            }),
+    MOUTRON("Moutron", "moutron",
             ItemBuilder.asHead(BuildHead.BLUE_SHEEP).build(),
-            MoutronConfig.class),
-    PITCH_OUT("PitchOut", "pitchout", Collections.singletonList("SOLO"),
+            types -> types.put("SOLO", MoutronConfig.class)),
+    PITCH_OUT("PitchOut", "pitchout",
             new ItemStack(Material.SNOW_BALL),
-            null),
+            types -> types.put("SOLO", null)),
 
     // Others
-    LOBBY("Lobby", "lobby", null, new ItemStack(Material.NETHER_STAR), false, null)
+    LOBBY("Lobby", "lobby", new ItemStack(Material.NETHER_STAR), false, types -> types.put("DEFAULT", null))
 
     ;
 
     private final String display;
     private final String database;
-    private final List<String> types;
     private final ItemStack icon;
     private final boolean game;
 
-    private final Class<? extends IHyriConfig> configClass;
+    private final Map<String, Class<? extends IHyriConfig>> types;
 
-    Category(String display, String database, List<String> types, ItemStack icon, boolean game, Class<? extends IHyriConfig> configClass) {
+    Category(String display, String database, ItemStack icon, boolean game, Consumer<Map<String, Class<? extends IHyriConfig>>> types) {
         this.display = display;
         this.database = database;
-        this.types = types;
+        this.types = new LinkedHashMap<>();
         this.icon = icon;
         this.game = game;
-        this.configClass = configClass;
+
+        types.accept(this.types);
     }
 
-    Category(String display, String database, List<String> types, ItemStack icon, Class<? extends IHyriConfig> configClass) {
-        this(display, database, types, icon, true, configClass);
+    Category(String display, String database, ItemStack icon, Consumer<Map<String, Class<? extends IHyriConfig>>> types) {
+        this(display, database, icon, true, types);
     }
 
     public String getDisplay() {
@@ -102,7 +112,7 @@ public enum Category {
     }
 
     public List<String> getTypes() {
-        return this.types;
+        return new ArrayList<>(this.types.keySet());
     }
 
     public ItemStack getIcon() {
@@ -113,17 +123,17 @@ public enum Category {
         return this.game;
     }
 
-    public Class<? extends IHyriConfig> getConfigClass() {
-        return this.configClass;
+    public Class<? extends IHyriConfig> getConfigClass(String type) {
+        return this.types.get(type);
     }
 
-    public boolean hasConfig() {
-        return this.configClass != null;
+    public boolean hasConfig(String type) {
+        return this.types.get(type) != null;
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends IHyriConfig> ConfigProcess<T> newConfigProcess(Player player) {
-        return (ConfigProcess<T>) HyriBuild.get().getConfigManager().initProcess(player, this.configClass);
+    public <T extends IHyriConfig> ConfigProcess<T> newConfigProcess(String type, Player player) {
+        return (ConfigProcess<T>) HyriBuild.get().getConfigManager().initProcess(player, this.types.get(type));
     }
 
 }

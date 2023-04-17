@@ -14,7 +14,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by AstFaster
@@ -44,7 +43,7 @@ public class ConfigManager {
 
             final ConfigProcess<T> process = new ConfigProcess<>(player, config, configData);
 
-            this.loadFields(process, config, null, null, this.getAllFields(configClass));
+            this.loadFields(process, config, null, null, null, this.getAllFields(configClass));
 
             this.processes.add(process);
 
@@ -58,7 +57,7 @@ public class ConfigManager {
         }
     }
 
-    private void loadFields(ConfigProcess<?> process, IHyriConfig config, ConfigOptionCategory category, Object categoryObject, List<Field> fields) {
+    private void loadFields(ConfigProcess<?> process, IHyriConfig config, ConfigOptionCategory category, Object categoryObject, String listMemberId, List<Field> fields) {
         try {
             for (Field field : fields) {
                 final ConfigOptionCategory nestedCategory = field.getAnnotation(ConfigOptionCategory.class);
@@ -69,7 +68,29 @@ public class ConfigManager {
                     final Object nestedCategoryObject = field.get(config);
                     final Class<?> clazz = nestedCategoryObject.getClass();
 
-                    this.loadFields(process, config, nestedCategory, nestedCategoryObject, this.getAllFields(clazz));
+                    if (List.class.isAssignableFrom(clazz)) {
+                        final List<?> list = (List<?>) nestedCategoryObject;
+
+                        for (Object object : list) {
+                            final Class<?> objectClass = object.getClass();
+
+                            String memberId = null;
+                            for (Field objectField : this.getAllFields(objectClass)) {
+                                if (objectField.getAnnotation(ConfigListMemberId.class) != null && objectField.getType() == String.class) {
+                                    objectField.setAccessible(true);
+
+                                    memberId = (String) objectField.get(object);
+                                }
+                            }
+
+                            if (memberId != null) {
+                                this.loadFields(process, config, nestedCategory, object, memberId, this.getAllFields(object.getClass()));
+                            }
+                        }
+                        continue;
+                    }
+
+                    this.loadFields(process, config, nestedCategory, nestedCategoryObject, null, this.getAllFields(clazz));
                     continue;
                 }
 
@@ -79,7 +100,7 @@ public class ConfigManager {
                     continue;
                 }
 
-                process.addStep(new ConfigStep(category, categoryObject, option, field));
+                process.addStep(new ConfigStep(category, categoryObject, listMemberId, option, field));
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);

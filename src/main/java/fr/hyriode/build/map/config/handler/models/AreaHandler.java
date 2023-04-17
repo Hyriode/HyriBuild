@@ -14,7 +14,7 @@ import org.bukkit.Location;
  * Created by AstFaster
  * on 01/06/2022 at 13:36
  */
-public class AreaHandler extends ConfigOptionHandler<AreaWrapper> {
+public class AreaHandler extends ConfigOptionHandler<AreaWrapper> implements ILocationConsumer {
 
     private LocationWrapper min;
 
@@ -29,6 +29,7 @@ public class AreaHandler extends ConfigOptionHandler<AreaWrapper> {
         this.process.sendMessage(builder -> builder.append("§7Première §bposition §7de la §bzone §7à définir."));
     }
 
+    @Override
     public void provideLocation(Location location) {
         final LocationWrapper newLocation = new LocationWrapper(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 

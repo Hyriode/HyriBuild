@@ -3,6 +3,7 @@ package fr.hyriode.build.gui.map;
 import fr.hyriode.build.gui.BuildGUI;
 import fr.hyriode.build.map.Category;
 import fr.hyriode.build.map.Environment;
+import fr.hyriode.build.map.Map;
 import fr.hyriode.build.util.BuildHead;
 import fr.hyriode.build.util.Filters;
 import fr.hyriode.hyrame.item.ItemBuilder;
@@ -38,10 +39,7 @@ public class MapFiltersGUI extends BuildGUI {
         this.addEnvironmentItem();
         this.addDateOrderItem();
         this.addStateItem();
-
-        if (this.category.hasConfig()) {
-            this.addConfigItem();
-        }
+        this.addConfigItem();
     }
 
     private void addEnvironmentItem() {

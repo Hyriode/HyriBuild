@@ -87,11 +87,19 @@ public class ConfigProcess<T extends IHyriConfig> {
         if (this.currentStep != null) {
             final ConfigOption option = this.currentStep.getOption();
             final ConfigOptionCategory category = this.currentStep.getCategory();
+            final String listMemberId = this.currentStep.getListMemberId();
             final ConfigOptionHandler<?> handler = option.type().newHandler(this);
 
             this.currentStep.setHandler(handler);
 
             this.sendMessage(builder -> {
+                if (listMemberId != null) {
+                    builder.append(" ▪ ").color(ChatColor.DARK_GRAY)
+                            .append("Element: ").color(ChatColor.GRAY)
+                            .append(listMemberId).color(ChatColor.AQUA)
+                            .append("\n").reset();
+                }
+
                 builder.append(" ▪ ").color(ChatColor.DARK_GRAY)
                         .append("Nouvelle valeur à définir: ").color(ChatColor.GRAY)
                         .append(option.name()).color(ChatColor.AQUA).event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, TextComponent.fromLegacyText("§7Id: §b" + option.id())))

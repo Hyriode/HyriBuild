@@ -53,7 +53,7 @@ public class MapUtils {
                         "§8 ▪ §7Activée: " + (map.getHandle().isEnabled() ? ChatColor.GREEN + Symbols.TICK_BOLD : ChatColor.RED + Symbols.CROSS_STYLIZED_BOLD)
                 );
 
-        if (map.getCategory().hasConfig()) {
+        if (map.getCategory().hasConfig(map.getHandle().getCategory())) {
             builder.appendLore("§8 ▪ §7Configurée: " + (map.hasConfig() ? ChatColor.GREEN + Symbols.TICK_BOLD : ChatColor.RED + Symbols.CROSS_STYLIZED_BOLD));
         }
 
