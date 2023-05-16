@@ -21,7 +21,7 @@ public class LaserGameConfig extends GameConfig {
     }};
 
     @ConfigOption(
-            type = ConfigOptionType.AREAS,
+            type = ConfigOptionType.LOCATIONS,
             id = "bonuses",
             name = "Bonus",
             description = "Défini les emplacements des bonus."
@@ -35,6 +35,12 @@ public class LaserGameConfig extends GameConfig {
         @ConfigListMemberId
         private final transient String display;
 
+        @ConfigOption(
+                type = ConfigOptionType.AREAS,
+                id = "base-doors",
+                name = "Portes de la base",
+                description = "Défini les portes de la base."
+        )
         private final List<AreaWrapper> doors = new ArrayList<>();
 
         @ConfigOption(

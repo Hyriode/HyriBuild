@@ -55,9 +55,6 @@ public class WRLeaderboardsHandler extends ConfigOptionHandler<List<WRConfig.Lea
 
     @Override
     public void provideLocation(Location location) {
-        location.setX(location.getBlockX() + (location.getBlockX() > 0 ? 0.5 : -0.5));
-        location.setZ(location.getBlockZ() + (location.getBlockZ() > 0 ? 0.5 : -0.5));
-
         final LocationWrapper result = new LocationWrapper(location);
 
         this.result.add(new WRConfig.Leaderboard(this.currentLeaderboard.getType(), this.currentLeaderboard.getName(), result));

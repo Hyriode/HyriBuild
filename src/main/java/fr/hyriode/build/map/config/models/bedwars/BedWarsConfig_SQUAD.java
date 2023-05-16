@@ -31,22 +31,25 @@ public class BedWarsConfig_SQUAD extends GameConfig {
             description = "Défini la zone de jeu."
     )
     private AreaWrapper gameArea;
-
+    
     private final List<Generator> generatorsBase = new ArrayList<Generator>(){{
         this.add(new Generator(0,
-                new Generator.Drop(Generator.Item.IRON, 30),
-                new Generator.Drop(Generator.Item.GOLD, 5 * 20)));
-        this.add(new Generator(1,
-                new Generator.Drop(Generator.Item.IRON, 23),
-                new Generator.Drop(Generator.Item.GOLD, 3 * 20)));
-        this.add(new Generator(2,
-                new Generator.Drop(Generator.Item.IRON, 18),
-                new Generator.Drop(Generator.Item.GOLD, 2 * 20),
-                new Generator.Drop(Generator.Item.EMERALD, 70 * 20)));
-        this.add(new Generator(3,
                 new Generator.Drop(Generator.Item.IRON, 15),
-                new Generator.Drop(Generator.Item.GOLD, 30),
-                new Generator.Drop(Generator.Item.EMERALD, 60 * 20)));
+                new Generator.Drop(Generator.Item.GOLD, 75)));
+        this.add(new Generator(1,
+                new Generator.Drop(Generator.Item.IRON, 11),
+                new Generator.Drop(Generator.Item.GOLD, 56)));
+        this.add(new Generator(2,
+                new Generator.Drop(Generator.Item.IRON, 8),
+                new Generator.Drop(Generator.Item.GOLD, 42)));
+        this.add(new Generator(3,
+                new Generator.Drop(Generator.Item.IRON, 8),
+                new Generator.Drop(Generator.Item.GOLD, 42),
+                new Generator.Drop(Generator.Item.EMERALD, 1400)));
+        this.add(new Generator(3,
+                new Generator.Drop(Generator.Item.IRON, 4),
+                new Generator.Drop(Generator.Item.GOLD, 21),
+                new Generator.Drop(Generator.Item.EMERALD, 1200)));
     }};
     private final List<Generator> generatorsDiamond = new ArrayList<Generator>(){{
         this.add(new Generator(0, new Generator.Drop(Generator.Item.DIAMOND, 30 * 20)));

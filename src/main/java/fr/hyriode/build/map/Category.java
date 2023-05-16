@@ -76,6 +76,12 @@ public enum Category {
     PITCH_OUT("PitchOut", "pitchout",
             new ItemStack(Material.SNOW_BALL),
             types -> types.put("SOLO", null)),
+    TEAM_FIGHT("TeamFight", "teamfight",
+            new ItemStack(Material.DIAMOND_SWORD),
+            types -> {
+                types.put("ONE_ONE", TeamFightConfig.class);
+                types.put("FIVE_FIVE", TeamFightConfig.class);
+            }),
 
     // Others
     LOBBY("Lobby", "lobby", new ItemStack(Material.NETHER_STAR), false, types -> types.put("DEFAULT", null))

@@ -2,10 +2,9 @@ package fr.hyriode.build.command;
 
 import fr.hyriode.build.HyriBuild;
 import fr.hyriode.build.gui.MainGUI;
+import fr.hyriode.hyrame.command.CommandContext;
+import fr.hyriode.hyrame.command.CommandInfo;
 import fr.hyriode.hyrame.command.HyriCommand;
-import fr.hyriode.hyrame.command.HyriCommandContext;
-import fr.hyriode.hyrame.command.HyriCommandInfo;
-import org.bukkit.entity.Player;
 
 /**
  * Created by AstFaster
@@ -14,13 +13,13 @@ import org.bukkit.entity.Player;
 public class MainCommand extends HyriCommand<HyriBuild> {
 
     public MainCommand(HyriBuild plugin) {
-        super(plugin, new HyriCommandInfo("hyribuild")
+        super(plugin, new CommandInfo("hyribuild")
                 .withAliases("panel"));
     }
 
     @Override
-    public void handle(HyriCommandContext ctx) {
-        new MainGUI((Player) ctx.getSender()).open();
+    public void handle(CommandContext ctx) {
+        new MainGUI(ctx.getSender()).open();
     }
 
 }

@@ -34,18 +34,21 @@ public class BedWarsConfig_ONE_ONE extends GameConfig {
     private final List<Generator> generatorsBase = new ArrayList<Generator>(){{
         this.add(new Generator(0,
                 new Generator.Drop(Generator.Item.IRON, 30),
-                new Generator.Drop(Generator.Item.GOLD, 5 * 20)));
+                new Generator.Drop(Generator.Item.GOLD, 150)));
         this.add(new Generator(1,
-                new Generator.Drop(Generator.Item.IRON, 23),
-                new Generator.Drop(Generator.Item.GOLD, 3 * 20)));
+                new Generator.Drop(Generator.Item.IRON, 22),
+                new Generator.Drop(Generator.Item.GOLD, 113)));
         this.add(new Generator(2,
-                new Generator.Drop(Generator.Item.IRON, 18),
-                new Generator.Drop(Generator.Item.GOLD, 2 * 20),
-                new Generator.Drop(Generator.Item.EMERALD, 70 * 20)));
+                new Generator.Drop(Generator.Item.IRON, 16),
+                new Generator.Drop(Generator.Item.GOLD, 84)));
         this.add(new Generator(3,
-                new Generator.Drop(Generator.Item.IRON, 15),
-                new Generator.Drop(Generator.Item.GOLD, 30),
-                new Generator.Drop(Generator.Item.EMERALD, 60 * 20)));
+                new Generator.Drop(Generator.Item.IRON, 16),
+                new Generator.Drop(Generator.Item.GOLD, 84),
+                new Generator.Drop(Generator.Item.EMERALD, 1400)));
+        this.add(new Generator(3,
+                new Generator.Drop(Generator.Item.IRON, 9),
+                new Generator.Drop(Generator.Item.GOLD, 42),
+                new Generator.Drop(Generator.Item.EMERALD, 1200)));
     }};
     private final List<Generator> generatorsDiamond = new ArrayList<Generator>(){{
         this.add(new Generator(0, new Generator.Drop(Generator.Item.DIAMOND, 30 * 20)));

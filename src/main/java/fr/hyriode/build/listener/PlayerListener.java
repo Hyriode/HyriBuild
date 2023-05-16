@@ -26,7 +26,7 @@ public class PlayerListener extends HyriListener<HyriBuild> {
         final IHyriRank rank = account.getRank();
 
         // Check server access (only builders, managers and admins)
-        if (!rank.isSuperior(StaffRank.MANAGER) && !rank.is(StaffRank.BUILDER) && !rank.is(StaffRank.DEVELOPER) && !HyriAPI.get().getPlayerManager().getWhitelistManager().isWhitelisted(event.getPlayer().getName())) {
+        if (!rank.isSuperior(StaffRank.MANAGER) && !rank.is(StaffRank.STAFF) && !rank.is(StaffRank.DEVELOPER) && !HyriAPI.get().getPlayerManager().getWhitelistManager().isWhitelisted(event.getPlayer().getName())) {
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
             event.setKickMessage(ChatColor.RED + "Vous n'avez pas la permission de rejoindre ce serveur!");
         }
