@@ -18,14 +18,6 @@ public class TeamFightConfig extends GameConfig {
 
     @ConfigOption(
             type = ConfigOptionType.AREA,
-            id = "middle-area",
-            name = "Zone de capture",
-            description = "Représente la zone à capturer pour gagner la partie."
-    )
-    private AreaWrapper middleArea;
-
-    @ConfigOption(
-            type = ConfigOptionType.AREA,
             id = "game-area",
             name = "Zone de jeu",
             description = "Représente la zone de jeu."
